@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  MuleSoft Training - Anypoint Platform Development: Level 2
+  %%
+  Copyright (C) 2019 - 2023 MuleSoft, Inc. All rights reserved. http://www.mulesoft.com
+  %%
+  The software in this package is published under the terms of the
+  Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Public License,
+  a copy of which has been included with this distribution in the LICENSE.txt file.
+  #L%
+  -->
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="checkIn" format="json">
+      <types:shape format="weave" example="examples/checkIn.json"><![CDATA[%dw 2.0
+type checkIn = {|
+  lastName: String, 
+  numBags: Number {"typeId": "int"}
+|} {"MetadataFormat": "json",
+"example": "{\"lastName\":\"Smith\",\"numBags\":2}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="flight" format="json">
+      <types:shape format="weave" example="examples/flight.json"><![CDATA[%dw 2.0
+type flight = {|
+  date_checkin: String, 
+  destination: String, 
+  flight_date: String, 
+  flight_no: String, 
+  origin: String
+|} {"MetadataFormat": "json",
+"example": "{\"date_checkin\":\"2018-02-21T21:11:49Z\",\"destination\":\"JFK\",\"flight_date\":\"2018-02-22\",\"flight_no\":\"KS404\",\"origin\":\"MUA\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="fms-get-ticket-response" format="json">
+      <types:shape format="weave" example="examples/flight-management-sapi-get-ticket-by-pnr-response.json"><![CDATA[%dw 2.0
+
+type fms_get_ticket_response = {|
+  ticketHolderLastName: String, 
+  ticketHolderPassPortNo: String, 
+  origin: String, 
+  destination: String, 
+  flightDate: String, 
+  flightNo: String, 
+  boarding: String, 
+  class: String, 
+  depart: String, 
+  gate: String, 
+  seat: String
+|} {"example": "{\\\"ticketHolderLastName\\\":\\\"Mule\\\",\\\"ticketHolderPassPortNo\\\":\\\"P3JR0BZ2OY\\\",\\\"origin\\\":\\\"SFO\\\",\\\"destination\\\":\\\"LAX\\\",\\\"flightDate\\\":\\\"2019-02-05\\\",\\\"flightNo\\\":\\\"ANY6829\\\",\\\"boarding\\\":\\\"05:15:00\\\",\\\"class\\\":\\\"Economy\\\",\\\"depart\\\":\\\"06:30:00\\\",\\\"gate\\\":\\\"4A\\\",\\\"seat\\\":\\\"16C\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="fms-check-in-request" format="json">
+      <types:shape format="weave" example="examples/check-in-by-pnr-request.json"><![CDATA[%dw 2.0
+
+type fms_check_in_request = {|
+  lastName: String, 
+  numBags: Number {"typeId": "int"}
+|} {"example": "{\\\"lastName\\\":\\\"Mule\\\",\\\"numBags\\\":2}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="fms-check-in-response" format="json">
+      <types:shape format="weave" example="examples/flight-management-sapi-update-checkins-by-pnr-response.json"><![CDATA[%dw 2.0
+
+type fms_check_in_response = {| message: String |} {"example": "{\\\"message\\\":\\\"Passenger check-in successful.\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="pds-create-fligt-request" format="json">
+      <types:shape format="weave" example="examples/passenger-data-sapi-create-flight-by-lno-request.json"><![CDATA[%dw 2.0
+
+type pds_create_fligt_request = {|
+  date_checkin: String, 
+  flight_date: String, 
+  flight_no: String, 
+  origin: String, 
+  destination: String
+|} {"example": "{\\\"date_checkin\\\":\\\"2018-02-21T21:11:49Z\\\",\\\"flight_date\\\":\\\"2018-02-22\\\",\\\"flight_no\\\":\\\"KS404\\\",\\\"origin\\\":\\\"MUA\\\",\\\"destination\\\":\\\"JFK\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="pds-create-flight-response" format="json">
+      <types:shape format="weave" example="examples/passenger-data-sapi-create-flight-by-lno-response.json"><![CDATA[%dw 2.0
+
+type pds_create_flight_response = {| message: String |} {"example": "{\\\"message\\\":\\\"Passenger check-in complete.\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="pps-create-payment-response" format="json">
+      <types:shape format="weave" example="examples/paypal-sapi-create-payment-response.json"><![CDATA[%dw 2.0
+
+type pps_create_payment_response = {| paymentID: String |} {"example": "{\\\"paymentID\\\":\\\"PAY-1B56960729604235TKQQIYVY\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="pps-create-payment-request" format="json">
+      <types:shape format="weave" example="examples/paypal-sapi-create-payment-resquest-1.json"><![CDATA[%dw 2.0
+
+type pps_create_payment_request = {|
+  description: String, 
+  amount: Number {"typeId": "double"}
+|} {"example": "{\\\"description\\\":\\\"Check-In Baggage.\\\",\\\"amount\\\":66.6}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="pps-update-approvals-request" format="json">
+      <types:shape format="weave" example="examples/paypal-sapi-update-payment-approval-request.json"><![CDATA[%dw 2.0
+
+type pps_update_approvals_request = {| payerID: String |} {"example": "{\\\"payerID\\\":\\\"STK829AJDK9\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="pps-update-approvals-response" format="json">
+      <types:shape format="weave" example="examples/paypal-sapi-update-payment-approval-response.json"><![CDATA[%dw 2.0
+
+type pps_update_approvals_response = {| status: String |} {"example": "{\\\"status\\\":\\\"Payment Executed\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="pds-get-passengers-response" format="json">
+      <types:shape format="weave" example="examples/passenger-data-sapi-get-passengers-response.json"><![CDATA[%dw 2.0
+
+type pds_get_passengers_response = {|
+  loyaltyNo: String, 
+  lastName: String
+|} {"example": "{\\\"loyaltyNo\\\":\\\"1576359340\\\",\\\"lastName\\\":\\\"Mule\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="PNR" format="java">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="boardingPass" format="json">
+      <types:shape format="weave" example="examples/boarding-pass.json"><![CDATA[%dw 2.0
+
+type boardingPass = {|
+  lastName: String, 
+  flightDate: String, 
+  depart: String, 
+  boarding: String, 
+  gate: String, 
+  flight: String, 
+  airportDepart: String, 
+  airportArrive: String, 
+  class: String, 
+  seat: String, 
+  bagsCount: Number {"typeId": "int"}, 
+  PNR: String
+|} {"example": "{\\\"lastName\\\":\\\"Smith\\\",\\\"flightDate\\\":\\\"2019-02-14\\\",\\\"depart\\\":\\\"14:30:00\\\",\\\"boarding\\\":\\\"13:15:00\\\",\\\"gate\\\":\\\"4A\\\",\\\"flight\\\":\\\"ANY6584\\\",\\\"airportDepart\\\":\\\"ATL\\\",\\\"airportArrive\\\":\\\"SFO\\\",\\\"class\\\":\\\"Economy\\\",\\\"seat\\\":\\\"16C\\\",\\\"bagsCount\\\":2,\\\"PNR\\\":\\\"928382J\\\"}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#f54a0523-99a9-4369-a399-8fb8d0e3938a">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="checkIn"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#aab2c2f6-d36c-48fc-9d3e-bb9e60c30d5d">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="flight"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#2aaf810a-33e3-476d-9080-28ce3465dc2a">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="fms-get-ticket-response"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#f7bfb40c-badd-43b9-9caf-d9603fbc1fee">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="fms-check-in-request"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#14266fbe-0b49-4094-a1aa-cde475217d4b">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="pds-create-flight-response"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#32f56c95-af13-43da-abc9-8bbcbd2c7d75">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="pps-create-payment-request"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#24f7105a-3034-4603-a6a6-d5610080374f">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="pps-update-approvals-response"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#c08b805e-bf4c-49ec-a56d-d5edd5c90f5d">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="pds-get-passengers-response"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

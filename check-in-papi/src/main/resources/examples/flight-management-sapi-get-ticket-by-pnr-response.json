@@ -1,0 +1,13 @@
+{
+  "ticketHolderLastName": "Mule",
+  "ticketHolderPassPortNo": "P3JR0BZ2OY",
+  "origin": "SFO",
+  "destination": "LAX",
+  "flightDate": "2019-02-05",
+  "flightNo": "ANY6829",
+  "boarding": "05:15:00",
+  "class": "Economy",
+  "depart": "06:30:00",
+  "gate": "4A",
+  "seat": "16C"
+}

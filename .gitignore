@@ -1,0 +1,11 @@
+# Maven/Java build output
+target/
+
+# Mule runtime and Anypoint Studio workspace metadata
+.mule/
+.metadata/
+
+# OS/IDE noise
+.DS_Store
+Thumbs.db
+

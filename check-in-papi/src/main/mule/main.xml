@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  MuleSoft Training - Anypoint Platform Development: Level 2
+  %%
+  Copyright (C) 2019 - 2021 MuleSoft, Inc. All rights reserved. http://www.mulesoft.com
+  %%
+  The software in this package is published under the terms of the
+  Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Public License,
+  a copy of which has been included with this distribution in the LICENSE.txt file.
+  #L%
+  -->
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:tracing="http://www.mulesoft.org/schema/mule/tracing" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="  http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd  http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd  http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd  http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd  http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd  http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd   http://www.mulesoft.org/schema/mule/tracing http://www.mulesoft.org/schema/mule/tracing/current/mule-tracing.xsd">
+  <flow name="check-in-by-pnr">
+    <tracing:set-logging-variable variableName="PNR" value="#[vars.PNR default '']" doc:name="Set PNR tracing var"/>
+    <logger level="INFO" message="#['Checking-in by PNR: ' ++ (vars.PNR default '')]" doc:name="START"/>
+    <set-variable variableName="checkIn" value="#[payload]" doc:name="checkIn"/>
+    <flow-ref name="check-in-flights-management" doc:name="check-in-flights-management"/>
+    <flow-ref name="register-passenger-data" doc:name="register-passenger-data"/>
+    <flow-ref name="create-payment-for-bags" doc:name="create-payment-for-bags"/>
+    <ee:transform>
+      <ee:message>
+        <ee:set-payload><![CDATA[%dw 2.0
+                output application/json
+                ---
+                {
+                  paymentID: "PAY-1AKD7482FAB9STATKO"
+                }]]></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <logger level="INFO" message="Checked-in by PNR" doc:name="END"/>
+  </flow>
+  <flow name="check-in-flights-management">
+    <logger/>
+  </flow>
+  <flow name="register-passenger-data">
+    <logger/>
+  </flow>
+  <flow name="create-payment-for-bags">
+    <logger/>
+    <error-handler>
+      <on-error-continue>
+        <raise-error type="APP:CANT_CREATE_PAYMENT"/>
+      </on-error-continue>
+    </error-handler>
+  </flow>
+  <flow name="payment-approval-by-pnr">
+    <logger level="INFO" message="#['Approving payment by PNR: ' ++ (vars.PNR default '')]" doc:name="START"/>
+    <flow-ref name="update-approvals" doc:name="update-approvals"/>
+    <flow-ref name="get-boarding-pass" doc:name="get-boarding-pass"/>
+    <logger level="INFO" message="Approved payment by PNR" doc:name="END"/>
+  </flow>
+  <flow name="update-approvals">
+    <ee:transform>
+      <ee:message>
+        <ee:set-payload><![CDATA[%dw 2.0
+                output application/json
+                ---
+                {
+                  status: "Payment Executed"
+                }]]></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+  </flow>
+  <flow name="get-boarding-pass">
+    <ee:transform>
+      <ee:message>
+        <ee:set-payload><![CDATA[%dw 2.0
+                output application/json
+                ---
+                {
+                  PNR: "928382J",
+                  airportArrive: "SFO",
+                  class: "Economy",
+                  bagsCount: 2,
+                  lastName: "Smith",
+                  seat: "16C",
+                  flightDate: "2019-02-14",
+                  flight: "ANY6584",
+                  boarding: "13:15:00",
+                  airportDepart: "ATL",
+                  gate: "4A",
+                  depart: "14:30:00"
+                }]]></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+  </flow>
+</mule>
