@@ -18,3 +18,7 @@ Each module may evolve as course exercises progress; commits track the increment
 - Initialized Git, added the provided Mule projects, and pushed to GitHub for ongoing module-by-module changes.
 - Added `set-org-id.bat` to quickly swap in your Anypoint Org ID across all POMs (matches the guide’s instruction to update org IDs before Exchange/Maven usage).
 - Tagged `WT1-1` to mark the initial setup checkpoint.
+
+## WT1-2 (Docs sync and tagging)
+- Added README context tying the repo to the DEX670 Exercise Guide, clarifying the starter assets captured and how to update the Org ID helper.
+- Tagged `WT1-2` to mark this documentation/alignment checkpoint before starting Walkthrough 1-2 implementation work.
