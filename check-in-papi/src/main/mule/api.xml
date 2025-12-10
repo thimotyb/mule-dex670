@@ -38,12 +38,19 @@
     <error-handler ref="api-console-error-handler"/>
   </flow>
   <flow name="put:\tickets\(PNR)\checkin:application\json:apiConfig">
-    <ee:transform>
-      <ee:variables>
-        <ee:set-variable variableName="PNR">attributes.uriParams.PNR</ee:set-variable>
-      </ee:variables>
-    </ee:transform>
+    <set-variable variableName="PNR"
+    value="#[attributes.uriParams.PNR]" />
     <flow-ref name="check-in-by-pnr" doc:name="check-in-by-pnr"/>
+    <error-handler>
+    <on-error-continue type="APP:LASTNAME_MISMATCH">
+      <set-payload
+        value='#[output application/json --- {message: "Invalid passenger name record or bad data uploaded."}]'
+      />
+      <set-variable
+        variableName="httpStatus" value="400" />
+    </on-error-continue>
+  </error-handler>
+    
   </flow>
   <flow name="put:\tickets\(PNR)\paymentApproval:application\json:apiConfig">
     <ee:transform>

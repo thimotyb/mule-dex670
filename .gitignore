@@ -4,8 +4,9 @@ target/
 # Mule runtime and Anypoint Studio workspace metadata
 .mule/
 .metadata/
+.tooling/
+.tooling-apps-cache/
 
 # OS/IDE noise
 .DS_Store
 Thumbs.db
-

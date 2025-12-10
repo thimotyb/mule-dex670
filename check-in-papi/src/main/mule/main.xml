@@ -15,6 +15,7 @@
     <tracing:set-logging-variable variableName="PNR" value="#[vars.PNR default '']" doc:name="Set PNR tracing var"/>
     <logger level="INFO" message="#['Checking-in by PNR: ' ++ (vars.PNR default '')]" doc:name="START"/>
     <set-variable variableName="checkIn" value="#[payload]" doc:name="checkIn"/>
+    <flow-ref name="validate-ticket-passport-matches" doc:name="validate-ticket-passport-matches"/>
     <flow-ref name="check-in-flights-management" doc:name="check-in-flights-management"/>
     <flow-ref name="register-passenger-data" doc:name="register-passenger-data"/>
     <flow-ref name="create-payment-for-bags" doc:name="create-payment-for-bags"/>
@@ -22,28 +23,148 @@
       <ee:message>
         <ee:set-payload><![CDATA[%dw 2.0
                 output application/json
-                ---
-                {
-                  paymentID: "PAY-1AKD7482FAB9STATKO"
-                }]]></ee:set-payload>
+               var paypalReturn = payload
+      ---
+      {
+        paymentID: paypalReturn.paymentID
+      }
+]]></ee:set-payload>
       </ee:message>
     </ee:transform>
     <logger level="INFO" message="Checked-in by PNR" doc:name="END"/>
   </flow>
-  <flow name="check-in-flights-management">
-    <logger/>
-  </flow>
+
+<flow name="validate-ticket-passport-matches">
+  <flow-ref name="get-ticket-by-pnr" />
+  <choice>
+    <when
+      expression="#[not vars.ticket.ticketHolderLastName == vars.checkIn.lastName]">
+      <raise-error type="APP:LASTNAME_MISMATCH" />
+    </when>
+  </choice>
+
+  <flow-ref name="get-passenger-data-by-passport" />
+  <choice>
+    <when
+      expression="#[not vars.passenger.lastName == vars.checkIn.lastName]">
+      <raise-error type="APP:LASTNAME_MISMATCH" />
+    </when>
+  </choice>
+</flow>
+
+<flow name="get-ticket-by-pnr">
+  <http:request config-ref="flightsManagementSapiConfig" method="GET" path="/tickets/{PNR}" target="ticket" doc:name="FMS Get Ticket">
+            <http:uri-params ><![CDATA[#[output application/java
+---
+{
+    "PNR" : vars.PNR
+}]]]></http:uri-params>
+    </http:request>
+</flow>
+
+<flow name="get-passenger-data-by-passport">
+  <http:request target="passenger" config-ref="passengerDataSapiConfig" method="GET" path="/passengers">
+            <http:query-params ><![CDATA[#[output application/java
+---
+{
+    "passportNo" : vars.ticket.ticketHolderPassPortNo
+}]]]></http:query-params>
+    </http:request>
+</flow>
+
+
+
+
+   <flow name="check-in-flights-management">
+		<ee:transform>
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+      output application/json
+      ---
+      {
+        lastName: vars.checkIn.lastName,
+        numBags:  vars.checkIn.numBags
+      }]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request config-ref="flightsManagementSapiConfig"
+			method="PUT" path="/tickets/{PNR}/checkin">
+			<http:uri-params><![CDATA[#[output application/java
+---
+{
+    "PNR" : vars.PNR
+}]]]></http:uri-params>
+		</http:request>
+	<error-handler>
+    <on-error-continue>
+      <raise-error type="APP:CANT_UPDATE_CHECKINS" />
+    </on-error-continue>
+  </error-handler>
+	
+	</flow>
+	
+	
   <flow name="register-passenger-data">
-    <logger/>
+<ee:transform>
+    <ee:message>
+      <ee:set-payload><![CDATA[%dw 2.0
+      output application/json
+      ---
+      {
+        "date_checkin": now() >> "UTC",
+        "destination":  vars.ticket.destination,
+        "flight_date":  vars.ticket.flightDate,
+        "flight_no":    vars.ticket.flightNo,
+        "origin":       vars.ticket.origin
+      }]]></ee:set-payload>
+    </ee:message>
+  </ee:transform>
+
+  <http:request config-ref="passengerDataSapiConfig" method="POST" path="/passengers/{LNO}/flights">
+            <http:uri-params ><![CDATA[#[output application/java
+---
+{
+    "LNO" : vars.passenger.loyaltyNo
+}]]]></http:uri-params>
+    </http:request>
+
+  <error-handler>
+    <on-error-continue>
+      <raise-error type="APP:CANT_CREATE_PASSENGER_FLIGHT"  />
+    </on-error-continue>
+  </error-handler>
+
   </flow>
+  
+  
+  
   <flow name="create-payment-for-bags">
-    <logger/>
-    <error-handler>
-      <on-error-continue>
-        <raise-error type="APP:CANT_CREATE_PAYMENT"/>
-      </on-error-continue>
-    </error-handler>
+<ee:transform>
+    <ee:message>
+      <ee:set-payload><![CDATA[%dw 2.0
+      output application/json
+      var numBags = vars.checkIn.numBags
+      var bagRate = 33.3
+      ---
+      {
+        description: "Check-In of $(numBags) bags at USD $(bagRate) each.",
+        amount:      bagRate*numBags
+      }]]></ee:set-payload>
+    </ee:message>
+  </ee:transform>
+
+  <http:request config-ref="paypalSapiConfig" method="POST" path="/payments"/>
+
+  <error-handler>
+    <on-error-continue>
+      <raise-error type="APP:CANT_CREATE_PAYMENT"  />
+    </on-error-continue>
+  </error-handler>
+
   </flow>
+  
+  
+  
   <flow name="payment-approval-by-pnr">
     <logger level="INFO" message="#['Approving payment by PNR: ' ++ (vars.PNR default '')]" doc:name="START"/>
     <flow-ref name="update-approvals" doc:name="update-approvals"/>

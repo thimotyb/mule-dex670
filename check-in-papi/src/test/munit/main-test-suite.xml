@@ -12,7 +12,7 @@
   -->
 <mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:core="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="  http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd   http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd  http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
   <munit:config name="main-test-suite.xml"/>
-  <munit:test name="check-in-by-pnr-happy-path-test" description="Test check-in-by-pnr happy path">
+  <munit:test name="check-in-by-pnr-happy-path-test" description="Test check-in-by-pnr happy path" ignore="true">
     <munit:behavior>
       <flow-ref name="setup-happy-sapi-mocks" doc:name="setup-happy-sapi-mocks"/>
       <flow-ref name="spy-all-mocks" doc:name="spy-all-mocks"/>

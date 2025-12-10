@@ -14,5 +14,34 @@
   <import file="health-common.xml" doc:name="Import health-common.xml"/>
   <sub-flow name="check-all-dependencies-are-alive">
     <logger/>
+	<http:request method="GET"
+		url="https://tngaa-flights-management-sapi-dev-9yj2rh.rajrd4-2.usa-e1.cloudhub.io/alive"
+		followRedirects="true" responseTimeout="1000">
+		<http:response-validator>
+			<http:success-status-code-validator
+				values="200" />
+		</http:response-validator>
+	</http:request>
+	<http:request method="GET"
+		url="https://tngaa-passenger-data-sapi-dev-9yj2rh.rajrd4-2.usa-e1.cloudhub.io/alive"
+		followRedirects="true" responseTimeout="1000">
+		<http:response-validator>
+			<http:success-status-code-validator
+				values="200" />
+		</http:response-validator>
+
+	</http:request>
+	<!-- "https://tngaa-paypal-sapi-dev-9yj2rh.rajrd4-2.usa-e1.cloudhub.io/alive" -->
+	<!-- "https://tngaa-http-simulator-service-zkvtif.rajrd4-1.usa-e1.cloudhub.io/wait" -->
+	<http:request method="GET"
+		url="https://tngaa-paypal-sapi-dev-9yj2rh.rajrd4-2.usa-e1.cloudhub.io/alive"
+		followRedirects="true" responseTimeout="1000">
+		<http:response-validator>
+			<http:success-status-code-validator
+				values="200" />
+		</http:response-validator>
+
+	</http:request>
+
   </sub-flow>
 </mule>
