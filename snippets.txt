@@ -1,0 +1,34 @@
+#### MODULE 1 
+
+## WT 1-1
+Exchange Viewer CApp
+3c33429d78024b62bbd6d32651bccaa9
+4D53374DbBa14c2cB57fcdd0B917Ba4E
+
+groupID a2908eed-8aad-40e2-a7fe-852aa705193f
+
+cd C:\mule\workspaces\muledev
+mvn install:install-file -Dfile=bom/pom.xml -DpomFile=bom/pom.xml
+mvn install:install-file -Dfile=parent-pom/pom.xml -DpomFile=parent-pom/pom.xml
+
+cd apps-commons
+mvn clean install
+
+cd ../check-in-papi
+mvn clean verify -U -Dencrypt.key=secure12345
+# To silence invalid cookie warnings, use:
+# mvn -Dorg.slf4j.simpleLogger.log.org.apache.http.client.protocol.ResponseProcessCookies=error clean verify
+
+# Tip: Paste these in Postman's URL to transform them in Postman requests
+curl -ik -X PUT -H "Content-Type: application/json" -d "{\"lastName\":\"Smith\",\"numBags\":2}" https://localhost:8081/api/v1/tickets/PNR123/checkin
+curl -ik -X PUT -H "Content-Type: application/json"  -d "{ \"payerID\": \"STJ8222K092ST\", \"paymentID\": \"PAY-1AKD7482FAB9STATKO\" }" https://localhost:8081/api/v1/tickets/N123/paymentApproval
+
+## WT 1-2
+curl -ik https://localhost:8081/alive
+curl -ik https://localhost:8081/ready
+
+## WT 1-3
+curl -ik -X PUT -H "Content-Type: application/json" -d "{\"lastName\":\"Smith\",\"numBags\":2}" https://localhost:8081/api/v1/tickets/PNR123/checkin
+
+cd ../check-in-papi
+mvn -Dorg.slf4j.simpleLogger.log.org.apache.http.client.protocol.ResponseProcessCookies=error clean verify -U -Dencrypt.key=secure12345
