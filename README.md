@@ -12,3 +12,9 @@ Each module may evolve as course exercises progress; commits track the increment
 
 ## Org ID helper
 - Use `set-org-id.bat` to stamp your Anypoint Org ID into all POMs. From repo root: `set-org-id.bat YOUR-ORG-ID` (or run without args to be prompted). It replaces `<groupId>`, `<student.deployment.ap.orgid>`, and `<new.ap.org.id>` UUIDs across `bom`, `parent-pom`, `apps-commons`, and `check-in-papi`.
+
+## WT1-1 (Set up the starter code)
+- Based on DEX670 Exercise Guide “Walkthrough 1-1: Set up the starter code”: this repo captures the starter AnyAirline assets (BOM, parent POM, `apps-commons` plugin, and `check-in-papi` process API) ready for incremental work.
+- Initialized Git, added the provided Mule projects, and pushed to GitHub for ongoing module-by-module changes.
+- Added `set-org-id.bat` to quickly swap in your Anypoint Org ID across all POMs (matches the guide’s instruction to update org IDs before Exchange/Maven usage).
+- Tagged `WT1-1` to mark the initial setup checkpoint.
