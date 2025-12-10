@@ -21,4 +21,5 @@ Each module may evolve as course exercises progress; commits track the increment
 
 ## WT1-2 (Docs sync and tagging)
 - Added README context tying the repo to the DEX670 Exercise Guide, clarifying the starter assets captured and how to update the Org ID helper.
+- Readiness probe (from the guide’s health walkthrough): `apps-commons` exposes `/alive` and `/ready`; `check-in-papi/src/main/mule/health.xml` imports it and defines `check-all-dependencies-are-alive` (currently a stub `logger`). Replace that stub with real dependency checks as you wire upstream systems—`ready` will fail if any dependency check raises an error.
 - Tagged `WT1-2` to mark this documentation/alignment checkpoint before starting Walkthrough 1-2 implementation work.
