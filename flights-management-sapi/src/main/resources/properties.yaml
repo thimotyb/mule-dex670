@@ -26,6 +26,9 @@ app:
 api:
   raml:          "flights-management-sapi.raml"
   majorVersion:  "v1"
+  callback:
+    path:   "/api/cancelFlight"
+    url:    "${api.callback.base}${api.callback.path}"
 
 https:
   port: "8081"

@@ -11,12 +11,12 @@
 		<!-- students: replace with your AP org ID -->
 		<groupId>a2908eed-8aad-40e2-a7fe-852aa705193f</groupId>
 		<artifactId>solutions-parent-pom</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.0.0</version>
 		<relativePath>../parent-pom/pom.xml</relativePath>
 	</parent>
 	<groupId>a2908eed-8aad-40e2-a7fe-852aa705193f</groupId>
 	<artifactId>check-in-papi-app</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>mule-application</packaging>
 	<name>check-in-papi</name>
 	<build>
@@ -92,4 +92,12 @@
 		</dependency>
 		<!-- standard dependencies for all Mule apps - end -->
 	</dependencies>
+	<repositories>
+		<repository>
+			<id>anypoint-exchange-v3</id>
+			<name>Anypoint Exchange V3</name>
+			<url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
 </project>

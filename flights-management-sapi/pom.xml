@@ -11,13 +11,13 @@
 		<!-- students: replace with your AP org ID -->
 		<groupId>a2908eed-8aad-40e2-a7fe-852aa705193f</groupId>
 		<artifactId>solutions-parent-pom</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.0.0</version>
 		<relativePath>../parent-pom/pom.xml</relativePath>
 	</parent>
 	<!-- students: replace with your AP org ID -->
 	<groupId>a2908eed-8aad-40e2-a7fe-852aa705193f</groupId>
 	<artifactId>flights-management-sapi-app</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>mule-application</packaging>
 	<name>flights-management-sapi</name>
 	<build>

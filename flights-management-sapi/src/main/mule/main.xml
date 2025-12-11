@@ -130,4 +130,57 @@ http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/
     </ee:transform>
     <logger level="INFO" message="Got ticket by PNR" doc:name="END"/>
   </flow>
+  
+   	<flow name="receive-cancellation-notification">
+  <http:listener
+    path="/api/cancelFlight"
+    allowedMethods="POST"
+    config-ref="apiHttpListenerConfig">
+    <http:response statusCode="#[vars.httpStatus default 202]">
+      <http:body>#[output text/plain --- vars.response default 'OK']</http:body>
+    </http:response>
+  </http:listener>
+
+  <logger level="INFO"
+    message="Received Cancellation Notification"/>
+</flow>
+  
+   	<flow name="register-callback">
+  <scheduler>
+    <scheduling-strategy>
+      <fixed-frequency
+        frequency="365000" timeUnit="DAYS" />
+    </scheduling-strategy>
+  </scheduler>
+  <ee:transform>
+    <ee:message>
+      <ee:set-payload><![CDATA[%dw 2.0
+      output application/xml
+      ns ns0 http://flightsMgmt.sword.com/
+      ---
+      {
+        ns0#registerForCancellationNotifications: {
+          callbackURL: p("api.callback.url")
+        }
+      }]]></ee:set-payload>
+    </ee:message>
+  </ee:transform>
+  <try>
+    <flow-ref name="register-for-cancellation-notifications" />
+    <error-handler>
+      <on-error-continue>
+        <raise-error type="APP:CANT_REGISTER_CALLBACK" />
+      </on-error-continue>
+    </error-handler>
+  </try>
+</flow>
+<sub-flow name="register-for-cancellation-notifications">
+  <wsc:consume
+    operation="registerForCancellationNotifications"
+    config-ref="flightsWSCConfig" />
+</sub-flow>
+  
+  
+  
+  
 </mule>

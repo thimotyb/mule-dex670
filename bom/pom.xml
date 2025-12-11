@@ -10,11 +10,11 @@
   <modelVersion>4.0.0</modelVersion>
   <!-- students: replace with your AP org ID, must be hardcode not dynamic for Exchange -->
   <groupId>a2908eed-8aad-40e2-a7fe-852aa705193f</groupId>
-  <artifactId>solutions-bom</artifactId>
+  <artifactId>solutions-bom</artifactId> 
   <!-- Exchange demands a name for deployment -->
   <name>solutions-bom</name>
   <!-- Exchange NON-SNAPSHOT version for deployment -->
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   
   <packaging>pom</packaging>
   <!-- IMPORTANT: Due to a limitation in MUnit, this file must be installed into the local Maven repo after every change: -->
@@ -101,7 +101,7 @@
     <!-- students: update with your own AP org ID -->
     <student.deployment.ap.orgid>a2908eed-8aad-40e2-a7fe-852aa705193f</student.deployment.ap.orgid>
     <!-- library-style Mule plugins -->
-    <apps-commons.version>1.0.0-SNAPSHOT</apps-commons.version>
+    <apps-commons.version>1.0.0</apps-commons.version>
     
     <!-- Mule extensions/modules/connectors -->
     

@@ -42,3 +42,8 @@ Each module may evolve as course exercises progress; commits track the increment
 - Configured mutual TLS for the downstream Flights Management SOAP service in `src/main/mule/global.xml` using the provided client PKCS#12 keystore and HTTPS request config (`flightsWSTLSContext` and `flightsWSCConfig`).
 - Kept APIkit routing and health flows aligned with earlier modules; sample SOAP payload generation and stubs remain in `main.xml` per the guide’s starter.
 - Updated `set-org-id.bat` and run-book snippets to include the new SAPI so org IDs and builds stay in sync.
+
+## WT1-6 (Register and receive cancellation callbacks)
+- Implemented the HTTP callback walkthrough in `flights-management-sapi`: added `/api/cancelFlight` listener to accept cancellation notifications and a scheduler-driven `register-callback` flow that invokes the SOAP `registerForCancellationNotifications` operation with the configured callback URL.
+- Added callback URL pieces to `properties.yaml`/`dev-properties.yaml` so the service registers its CloudHub URL, and captured cURL examples plus Exchange deploy steps in `snippets.txt`.
+- **apps-commons build fix:** removing the hard-coded Mule Maven Plugin version and letting the BOM manage it resolved the "bundle cannot be created with null Bundle URI cannot be null" error when building release (non-SNAPSHOT) artifacts.
