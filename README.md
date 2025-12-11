@@ -11,7 +11,7 @@ Each module may evolve as course exercises progress; commits track the increment
 - Maven WARN about `org.apache.http.client.protocol.ResponseProcessCookies`: comes from HttpClient rejecting an ALB cookie (`AWSALBTGCORS`) with an `Expires` format it dislikes. Harmless; Maven ignores the cookie. Silence per-run with `mvn -Dorg.slf4j.simpleLogger.log.org.apache.http.client.protocol.ResponseProcessCookies=error clean verify` (or set the property in `MAVEN_OPTS` to make it sticky).
 
 ## Org ID helper
-- Use `set-org-id.bat` to stamp your Anypoint Org ID into all POMs. From repo root: `set-org-id.bat YOUR-ORG-ID` (or run without args to be prompted). It replaces `<groupId>`, `<student.deployment.ap.orgid>`, and `<new.ap.org.id>` UUIDs across `bom`, `parent-pom`, `apps-commons`, and `check-in-papi`.
+- Use `set-org-id.bat` to stamp your Anypoint Org ID into all POMs. From repo root: `set-org-id.bat YOUR-ORG-ID` (or run without args to be prompted). It replaces `<groupId>`, `<student.deployment.ap.orgid>`, and `<new.ap.org.id>` UUIDs across `bom`, `parent-pom`, `apps-commons`, `check-in-papi`, `paypal-sapi`, and `flights-management-sapi`.
 
 ## WT1-1 (Set up the starter code)
 - Based on DEX670 Exercise Guide “Walkthrough 1-1: Set up the starter code”: this repo captures the starter AnyAirline assets (BOM, parent POM, `apps-commons` plugin, and `check-in-papi` process API) ready for incremental work.
@@ -36,3 +36,9 @@ Each module may evolve as course exercises progress; commits track the increment
 - Configured `paypalServerHttpRequestConfig` in `src/main/mule/global.xml` to request tokens from the fake PayPal sandbox, caching them in an object store; left the temporary `encrypt.key` default for Studio tooling as directed in the walkthrough.
 - Verified the health endpoints and PayPal flows via the provided cURL calls (create/approve payment) now succeed with OAuth; prep work captured in `snippets.txt` for reruns.
 - Updated `set-org-id.bat` so the Org ID helper now stamps the new `paypal-sapi` POMs alongside the existing projects.
+
+## WT1-5 (SOAP with mutual TLS for Flights Management SAPI)
+- Added the WT1-5 starter for `flights-management-sapi`, which exposes `check-in` and `get-ticket-by-pnr` via SOAP through the Web Service Consumer connector.
+- Configured mutual TLS for the downstream Flights Management SOAP service in `src/main/mule/global.xml` using the provided client PKCS#12 keystore and HTTPS request config (`flightsWSTLSContext` and `flightsWSCConfig`).
+- Kept APIkit routing and health flows aligned with earlier modules; sample SOAP payload generation and stubs remain in `main.xml` per the guide’s starter.
+- Updated `set-org-id.bat` and run-book snippets to include the new SAPI so org IDs and builds stay in sync.

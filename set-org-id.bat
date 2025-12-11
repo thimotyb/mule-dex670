@@ -21,7 +21,16 @@ powershell -NoProfile -ExecutionPolicy Bypass ^
   "  '(?<=<student\.deployment\.ap\.orgid>)[0-9a-fA-F-]{36}(?=</student\.deployment\.ap\.orgid>)'," ^
   "  '(?<=<new\.ap\.org\.id>)[0-9a-fA-F-]{36}(?=</new\.ap\.org\.id>)'" ^
   ");" ^
-  "$files = @('bom/pom.xml','parent-pom/pom.xml','apps-commons/pom.xml','check-in-papi/pom.xml','paypal-sapi/pom.xml','paypal-sapi/pom-ci.xml');" ^
+  "$files = @(" ^
+  "  'bom/pom.xml'," ^
+  "  'parent-pom/pom.xml'," ^
+  "  'apps-commons/pom.xml'," ^
+  "  'check-in-papi/pom.xml'," ^
+  "  'paypal-sapi/pom.xml'," ^
+  "  'paypal-sapi/pom-ci.xml'," ^
+  "  'flights-management-sapi/pom.xml'," ^
+  "  'flights-management-sapi/pom-ci.xml'" ^
+  ");" ^
   "foreach ($f in $files) {" ^
   "  if (-not (Test-Path $f)) { Write-Warning \"Missing file: $f\"; continue }" ^
   "  $text = Get-Content $f -Raw;" ^
