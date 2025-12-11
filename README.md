@@ -30,3 +30,9 @@ Each module may evolve as course exercises progress; commits track the increment
 - Adjusted `api.xml` error handler to return 400 on last-name mismatch, and promoted HTTP message logging to DEBUG for troubleshooting.
 - Readiness probe now calls `/alive` on all three SAPIs to fail fast if dependencies are down.
 - Temporarily ignored the happy-path MUnit test pending updated mocks.
+
+## WT1-4 (Enable OAuth client for PayPal SAPI)
+- Pulled in the WT1-4 starter for `paypal-sapi` and wired it to our shared BOM/parent; added OAuth and Object Store modules per the guide so PayPal calls use the client-credentials grant instead of failing with 401s.
+- Configured `paypalServerHttpRequestConfig` in `src/main/mule/global.xml` to request tokens from the fake PayPal sandbox, caching them in an object store; left the temporary `encrypt.key` default for Studio tooling as directed in the walkthrough.
+- Verified the health endpoints and PayPal flows via the provided cURL calls (create/approve payment) now succeed with OAuth; prep work captured in `snippets.txt` for reruns.
+- Updated `set-org-id.bat` so the Org ID helper now stamps the new `paypal-sapi` POMs alongside the existing projects.
