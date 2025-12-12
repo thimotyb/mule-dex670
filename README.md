@@ -47,3 +47,8 @@ Each module may evolve as course exercises progress; commits track the increment
 - Implemented the HTTP callback walkthrough in `flights-management-sapi`: added `/api/cancelFlight` listener to accept cancellation notifications and a scheduler-driven `register-callback` flow that invokes the SOAP `registerForCancellationNotifications` operation with the configured callback URL.
 - Added callback URL pieces to `properties.yaml`/`dev-properties.yaml` so the service registers its CloudHub URL, and captured cURL examples plus Exchange deploy steps in `snippets.txt`.
 - **apps-commons build fix:** removing the hard-coded Mule Maven Plugin version and letting the BOM manage it resolved the "bundle cannot be created with null Bundle URI cannot be null" error when building release (non-SNAPSHOT) artifacts.
+
+## WT2-1 (Persist cancellation notifications)
+- Based on the DEX670 Activity Guide Walkthrough 2-1: added the Mule VM connector to `flights-management-sapi` so `/api/cancelFlight` publishes cancellation notices to a persistent queue (with a DLQ) instead of handling inline, keeping callback ingestion resilient.
+- Introduced the VM connector dependency plus VM config/queues in `global.xml` and wired `receive-cancellation-notification` to publish to `flight-cancel-notifs-q`, matching the guide’s async processing pattern.
+- Explicitly set Mule Maven Plugin 4.5.3 in `apps-commons/pom.xml` per the guide to keep plugin alignment during builds.

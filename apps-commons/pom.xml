@@ -29,6 +29,7 @@
 					<classifier>mule-plugin</classifier>
 				</configuration>
 				<!-- version comes from BOM (mule.maven.plugin.version) -->
+				<version>4.5.3</version>
 			</plugin>
 		</plugins>
 	</build>
