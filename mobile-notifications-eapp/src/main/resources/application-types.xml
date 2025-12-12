@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="flightCancelledEvent" format="json">
+      <types:shape format="weave" example="examples/flightCancelledEvent.json"><![CDATA[%dw 2.0
+
+type flightCancelledEvent = {|
+  pnr: String, 
+  lastNameOfPassenger: String
+|} {"example": "{\\\"pnr\\\":\\\"RW4TAB\\\",\\\"lastNameOfPassenger\\\":\\\"Smith\\\"}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+</types:mule>
