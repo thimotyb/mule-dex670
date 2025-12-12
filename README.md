@@ -59,4 +59,8 @@ Each module may evolve as course exercises progress; commits track the increment
 
 ## WT2-3 (Fan out cancellations to Anypoint MQ)
 - Wired `flights-management-sapi` to publish validated cancellation events to Anypoint MQ (`cancelled-flights-exchg-dev`) after VM consumption, keeping retries/DLQ in place for bad messages.
-- Added Anypoint MQ connector/config (client credentials + env URL) and dependency updates so the service can fan out events per the guide’s next step.
+- Added Anypoint MQ connector/config (client credentials + env URL) and dependency updates so the service can fan out events per the guide's next step.
+
+## WT2-4 (Mobile notifications experience app)
+- Pulled in the `mobile-notifications-eapp` starter from the Activity Guide to consume cancellation events and drive mobile notifications; includes Mule scaffolding, properties, and MUnit health/startup suites.
+- Captured the WT2-4 run-book note in `snippets.txt` for invoking cancellation callbacks against the deployed Flights Management SAPI to see notifications flow through.
