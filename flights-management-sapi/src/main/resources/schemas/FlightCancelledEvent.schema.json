@@ -1,0 +1,30 @@
+ {
+ 	    "$schema": "https://json-schema.org/draft/2019-09/schema",
+ 	    "$id": "http://example.com/example.json",
+ 	    "title": "Root Schema",
+ 	    "type": "object",
+ 	    "required": [
+ 	        "pnr",
+ 	        "lastNameOfPassenger"
+ 	    ],
+ 	    "properties": {
+ 	        "pnr": {
+ 	            "title": "The pnr Schema",
+ 	            "type": "string",
+ 	            "examples": [
+ 	                "PNR123"
+ 	            ]
+ 	        },
+ 	        "lastNameOfPassenger": {
+ 	            "title": "The lastNameOfPassenger Schema",
+ 	            "type": "string",
+ 	            "examples": [
+ 	                "Mule"
+ 	            ]
+ 	        }
+ 	    },
+ 	    "examples": [{
+ 	        "pnr": "PNR123",
+ 	        "lastNameOfPassenger": "Mule"
+ 	    }]
+ }

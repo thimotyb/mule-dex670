@@ -117,6 +117,12 @@
 		<artifactId>mule-xml-module</artifactId>
 		<classifier>mule-plugin</classifier>
 	</dependency>
+
+	<dependency>
+		<groupId>org.mule.modules</groupId>
+		<artifactId>mule-json-module</artifactId>
+		<classifier>mule-plugin</classifier>
+	</dependency>
 	
 	
 		

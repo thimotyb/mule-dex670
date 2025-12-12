@@ -73,3 +73,7 @@ Each module may evolve as course exercises progress; commits track the increment
 ## WT3-2 (Schema-validate cancellation payloads)
 - Added XML module + XSD schema validation for `/api/cancelFlight` (CancellationNotification.xsd) to ensure required elements are present before enqueueing.
 - Validation failures (validation or XML module) now short-circuit with 400 and echo the original payload; added the XML module dependency and schema resource.
+
+## WT3-3 (Validate MQ fan-out payload)
+- Added JSON module/schema validation for the fan-out payload to Anypoint MQ (`FlightCancelledEvent.schema.json`) after transformation, catching malformed messages before publish.
+- Included JSON module dependency/namespace to support the validation step in `deliver-flight-cancelled-event`.
