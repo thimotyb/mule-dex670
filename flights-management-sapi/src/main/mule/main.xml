@@ -190,7 +190,78 @@ http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/
     config-ref="flightsWSCConfig" />
 </sub-flow>
   
+   	<flow name="deliver-flight-cancelled-event">
+  <vm:listener
+    queueName="flight-cancel-notifs-q"
+    transactionalAction="ALWAYS_BEGIN"
+    config-ref="vmConfig">
+    <redelivery-policy
+      maxRedeliveryCount="3"
+      idExpression="#[correlationId]" />
+  </vm:listener>
+
+  <logger level="INFO" message="Received"/>
   
+  <try
+    transactionalAction="BEGIN_OR_JOIN">
+    <set-variable
+      variableName="originalPayload"
+      value="#[output text/plain --- payload.^raw]"
+    />
+    
+    <ee:transform>
+    <ee:message>
+      <ee:set-payload><![CDATA[%dw 2.0
+      output application/json
+      ---
+      {
+        pnr:                 payload.CancellationNotification.PNR,
+        lastNameOfPassenger: payload.CancellationNotification.PassengerLastName
+      }]]></ee:set-payload>
+    </ee:message>
+  </ee:transform>
+ 	<set-variable variableName="msgValid" value="#[true]"/>
+    <error-handler>
+      <on-error-continue
+        enableNotifications="false"
+        logException="false">
+        <flow-ref name="send-to-vm-dlq" />
+        <set-variable variableName="msgValid" value="#[false]"/>
+      </on-error-continue>
+    </error-handler>
+ 	
+ </try>
+ 
+	<error-handler>
+		<on-error-continue type="MULE:REDELIVERY_EXHAUSTED"
+			enableNotifications="false" logException="false">
+			<logger level="ERROR" message="Giving up" />
+			<flow-ref name="send-to-vm-dlq" />
+		</on-error-continue>
+	</error-handler>
+  
+</flow>
+  
+<sub-flow name="send-to-vm-dlq">
+  <vm:publish
+    queueName="flight-cancel-notifs-dlq"
+    timeout="5000" timeoutUnit="MILLISECONDS"
+    config-ref="vmConfig">
+    	<vm:content>#[vars.originalPayload]</vm:content>
+    </vm:publish>
+</sub-flow>
+  
+   	<flow name="handle-dlq">
+  <vm:listener
+    queueName="flight-cancel-notifs-dlq"
+    config-ref="vmConfig">
+    <redelivery-policy
+      maxRedeliveryCount="3"
+      idExpression="#[correlationId]"/>
+  </vm:listener>
+  <logger level="INFO"
+    message="Processing message from DLQ"/>
+</flow>
   
   
 </mule>

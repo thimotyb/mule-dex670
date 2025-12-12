@@ -52,3 +52,7 @@ Each module may evolve as course exercises progress; commits track the increment
 - Based on the DEX670 Activity Guide Walkthrough 2-1: added the Mule VM connector to `flights-management-sapi` so `/api/cancelFlight` publishes cancellation notices to a persistent queue (with a DLQ) instead of handling inline, keeping callback ingestion resilient.
 - Introduced the VM connector dependency plus VM config/queues in `global.xml` and wired `receive-cancellation-notification` to publish to `flight-cancel-notifs-q`, matching the guide’s async processing pattern.
 - Kept the Mule Maven Plugin version managed by the BOM (removed Studio-injected pin) in `apps-commons/pom.xml` so builds stay consistent across modules.
+
+## WT2-2 (Process cancellation notifications)
+- Added the VM consumer flow in `flights-management-sapi` to deliver cancellation events from `flight-cancel-notifs-q`, with redelivery policy, DLQ publisher, and a simple payload shape for downstream handling.
+- Introduced a `send-to-vm-dlq` subflow and a DLQ listener (`flight-cancel-notifs-dlq`) so failed/poison messages are preserved and logged instead of being lost.
