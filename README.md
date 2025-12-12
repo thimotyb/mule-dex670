@@ -64,3 +64,4 @@ Each module may evolve as course exercises progress; commits track the increment
 ## WT2-4 (Mobile notifications experience app)
 - Pulled in the `mobile-notifications-eapp` starter from the Activity Guide to consume cancellation events and drive mobile notifications; includes Mule scaffolding, properties, and MUnit health/startup suites.
 - Captured the WT2-4 run-book note in `snippets.txt` for invoking cancellation callbacks against the deployed Flights Management SAPI to see notifications flow through.
+- Updated `set-org-id.bat` so the Org ID helper also stamps the new experience app POMs.

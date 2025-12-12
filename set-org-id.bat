@@ -29,7 +29,9 @@ powershell -NoProfile -ExecutionPolicy Bypass ^
   "  'paypal-sapi/pom.xml'," ^
   "  'paypal-sapi/pom-ci.xml'," ^
   "  'flights-management-sapi/pom.xml'," ^
-  "  'flights-management-sapi/pom-ci.xml'" ^
+  "  'flights-management-sapi/pom-ci.xml'," ^
+  "  'mobile-notifications-eapp/pom.xml'," ^
+  "  'mobile-notifications-eapp/pom-ci.xml'" ^
   ");" ^
   "foreach ($f in $files) {" ^
   "  if (-not (Test-Path $f)) { Write-Warning \"Missing file: $f\"; continue }" ^
