@@ -69,3 +69,7 @@ Each module may evolve as course exercises progress; commits track the increment
 ## WT3-1 (Validate cancel notifications at ingress)
 - Added Mule Validation module to `flights-management-sapi` and enforced XML content-type and non-empty payload on `/api/cancelFlight` so bad requests fail fast with 400 before hitting queues.
 - Captured the original payload for error responses and added a handler to return it on validation failures.
+
+## WT3-2 (Schema-validate cancellation payloads)
+- Added XML module + XSD schema validation for `/api/cancelFlight` (CancellationNotification.xsd) to ensure required elements are present before enqueueing.
+- Validation failures (validation or XML module) now short-circuit with 400 and echo the original payload; added the XML module dependency and schema resource.

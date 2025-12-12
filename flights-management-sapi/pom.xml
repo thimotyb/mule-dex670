@@ -111,6 +111,13 @@
 		<artifactId>mule-validation-module</artifactId>
 		<classifier>mule-plugin</classifier>
 	</dependency>
+
+	<dependency>
+		<groupId>org.mule.modules</groupId>
+		<artifactId>mule-xml-module</artifactId>
+		<classifier>mule-plugin</classifier>
+	</dependency>
+	
 	
 		
 	</dependencies>
