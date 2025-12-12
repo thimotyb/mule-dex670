@@ -194,6 +194,7 @@ http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/
   <vm:listener
     queueName="flight-cancel-notifs-q"
     transactionalAction="ALWAYS_BEGIN"
+    transactionTimeout="60000"
     config-ref="vmConfig">
     <redelivery-policy
       maxRedeliveryCount="3"
