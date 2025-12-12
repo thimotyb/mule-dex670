@@ -65,3 +65,7 @@ Each module may evolve as course exercises progress; commits track the increment
 - Pulled in the `mobile-notifications-eapp` starter from the Activity Guide to consume cancellation events and drive mobile notifications; includes Mule scaffolding, properties, and MUnit health/startup suites.
 - Captured the WT2-4 run-book note in `snippets.txt` for invoking cancellation callbacks against the deployed Flights Management SAPI to see notifications flow through.
 - Updated `set-org-id.bat` so the Org ID helper also stamps the new experience app POMs.
+
+## WT3-1 (Validate cancel notifications at ingress)
+- Added Mule Validation module to `flights-management-sapi` and enforced XML content-type and non-empty payload on `/api/cancelFlight` so bad requests fail fast with 400 before hitting queues.
+- Captured the original payload for error responses and added a handler to return it on validation failures.
