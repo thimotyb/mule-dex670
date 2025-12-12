@@ -56,3 +56,7 @@ Each module may evolve as course exercises progress; commits track the increment
 ## WT2-2 (Process cancellation notifications)
 - Added the VM consumer flow in `flights-management-sapi` to deliver cancellation events from `flight-cancel-notifs-q`, with redelivery policy, DLQ publisher, and a simple payload shape for downstream handling.
 - Introduced a `send-to-vm-dlq` subflow and a DLQ listener (`flight-cancel-notifs-dlq`) so failed/poison messages are preserved and logged instead of being lost.
+
+## WT2-3 (Fan out cancellations to Anypoint MQ)
+- Wired `flights-management-sapi` to publish validated cancellation events to Anypoint MQ (`cancelled-flights-exchg-dev`) after VM consumption, keeping retries/DLQ in place for bad messages.
+- Added Anypoint MQ connector/config (client credentials + env URL) and dependency updates so the service can fan out events per the guide’s next step.
